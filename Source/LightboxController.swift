@@ -162,6 +162,8 @@ open class LightboxController: UIViewController {
 
   fileprivate var initialImages: [LightboxImage]
   fileprivate let initialPage: Int
+    
+    open var rightButtonPressed:(() -> ())?
 
   // MARK: - Initializers
 
@@ -184,7 +186,7 @@ open class LightboxController: UIViewController {
     // Lightbox hasn't been optimized to be used in presentation styles other than fullscreen.
     modalPresentationStyle = .fullScreen
     
-    statusBarHidden = UIApplication.shared.isStatusBarHidden
+    statusBarHidden = true
 
     view.backgroundColor = LightboxConfig.imageBackgroundColor
     transitionManager.lightboxController = self
@@ -441,34 +443,14 @@ extension LightboxController: PageViewDelegate {
 
 extension LightboxController: HeaderViewDelegate {
 
-  func headerView(_ headerView: HeaderView, didPressDeleteButton deleteButton: UIButton) {
-    deleteButton.isEnabled = false
-
-    imageDeleteDelegate?.lightboxController(self, willDeleteAt: currentPage)
-      
-    guard numberOfPages != 1 else {
-      pageViews.removeAll()
-      self.headerView(headerView, didPressCloseButton: headerView.closeButton)
-      return
-    }
-
-    let prevIndex = currentPage
-
-    if currentPage == numberOfPages - 1 {
-      previous()
-    } else {
-      next()
-      currentPage -= 1
-    }
-
-    self.initialImages.remove(at: prevIndex)
-    self.pageViews.remove(at: prevIndex).removeFromSuperview()
+  func headerView(_ headerView: HeaderView, didPressRightButton rightButton: UIButton) {
+    rightButton.isEnabled = false
 
     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-      self.configureLayout(self.view.bounds.size)
-      self.currentPage = Int(self.scrollView.contentOffset.x / self.view.bounds.width)
-      deleteButton.isEnabled = true
+      rightButton.isEnabled = true
     }
+      
+    self.rightButtonPressed?()
   }
 
   func headerView(_ headerView: HeaderView, didPressCloseButton closeButton: UIButton) {
@@ -486,7 +468,7 @@ extension LightboxController: FooterViewDelegate {
   public func footerView(_ footerView: FooterView, didExpand expanded: Bool) {
     UIView.animate(withDuration: 0.25, animations: {
       self.overlayView.alpha = expanded ? 1.0 : 0.0
-      self.headerView.deleteButton.alpha = expanded ? 0.0 : 1.0
+      self.headerView.rightButton.alpha = expanded ? 0.0 : 1.0
     })
   }
 }

@@ -7,13 +7,14 @@ class LoadingIndicator: UIView {
   init() {
     super.init(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
 
-    backgroundColor = UIColor.darkGray
+    backgroundColor = UIColor.clear
     layer.cornerRadius = bounds.size.width / 2
     clipsToBounds = true
     alpha = 0
 
     indicator = UIActivityIndicatorView()
-    indicator.style = .whiteLarge
+    indicator.style = .medium
+    indicator.color = .white
     indicator.startAnimating()
 
     addSubview(indicator)

@@ -38,8 +38,8 @@ public class LightboxConfig {
     public static var separatorColor = UIColor(hex: "3D4757")
 
     public static var textAttributes: [NSAttributedString.Key: Any] = [
-      .font: UIFont.systemFont(ofSize: 12),
-      .foregroundColor: UIColor(hex: "899AB8"),
+        .font: UIFont.systemFont(ofSize: 12, weight: .bold),
+      .foregroundColor: UIColor.white, // UIColor(hex: "899AB8"),
       .paragraphStyle: {
         var style = NSMutableParagraphStyle()
         style.alignment = .center
@@ -65,7 +65,7 @@ public class LightboxConfig {
     ]
   }
 
-  public struct DeleteButton {
+  public struct RightButton {
     public static var enabled = false
     public static var size: CGSize?
     public static var text = NSLocalizedString("Delete", comment: "")

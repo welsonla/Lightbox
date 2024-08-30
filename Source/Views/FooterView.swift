@@ -29,7 +29,7 @@ open class FooterView: UIView {
   open fileprivate(set) lazy var separatorView: UIView = { [unowned self] in
     let view = UILabel(frame: CGRect.zero)
     view.isHidden = !LightboxConfig.PageIndicator.enabled
-    view.backgroundColor = LightboxConfig.PageIndicator.separatorColor
+    view.backgroundColor = .clear
 
     return view
   }()
